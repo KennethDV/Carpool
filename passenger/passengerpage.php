@@ -1,9 +1,10 @@
 <?php
 session_start();
+include '../connection/connection.php';
 
-include('connection.php');
-include('functions.php');
-
+if(isset($_SESSION['user_name'])){
+  echo 'welcome' . ' '.$_SESSION['user_name'];
+}
 
 ?>
 <!DOCTYPE html>
@@ -25,15 +26,15 @@ include('functions.php');
     <a class="nav-link" href="passengerprofile.php">Profile</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">Link</a>
+    <a class="nav-link" href="cashinpage.php">Cash In</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link disabled">Disabled</a>
+    <a class="nav-link" href="">Withdraw</a>
   </li>
 </ul>
     </div>
     <h1>Hello Passenger!!</h1>
-    <a href="login.php">Logout</a>
+    <a href="../login.php">Logout</a>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 </body>

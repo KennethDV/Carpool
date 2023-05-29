@@ -1,35 +1,40 @@
 <?php
 session_start();
 
-include("connection.php");
-include("functions.php");
-
+include("connection/connection.php");
+include("connection/functions.php");
 
 
 
 if($_SERVER['REQUEST_METHOD'] == "POST"){
     $username = $_POST['username'];
-    $pass = $_POST['password'];
+    $pass = $_POST['password']; 
 
     if(!empty($username) && !empty($pass)){
 
-        //read from database
         $query = "select * from user where user_name = '$username' limit 1";
+        $res = mysqli_query($con, $query);
 
-        $result = mysqli_query($con, $query);
+        if(mysqli_num_rows($res) != 0){
+            $row = mysqli_fetch_assoc($res);
+            if($username == $row['user_name'] && ($pass == $row['user_password'])){
+                $_SESSION['user_name'] = $username;
+                $_SESSION['user_id'] = $row['user_id'];
 
-        if($result){
-            if($result && mysqli_num_rows($result) > 0){
-                $user_data = mysqli_fetch_assoc($result);
-                
-                if($user_data['user_password'] === $pass){
-                    $_SESSION['username'] = $user_data['username'];
-                    header('Location: passengerpage.php');
-                    die;
+                if($row['user_type'] == 'Passenger'){
+                    header('Location:passenger/passengerpage.php');
+                }
+                else if($row['user_type'] == 'Driver'){
+                    header('Location:passenger/passengerpage.php');
+                }else{
+                    header('Location:admin/adminpage.php');
                 }
             }
-        }        
+        }else{
+            echo 'failed';
+        }
     }else{
+        echo 'fill up the fields';
     }
 }
 ?>
@@ -70,7 +75,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
             font-family: 'Cabin', sans-serif;
             background-image: url('images/traffic.jpg');
             height: 100%;
-            background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
         }
